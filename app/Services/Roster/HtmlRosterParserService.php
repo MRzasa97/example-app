@@ -8,16 +8,18 @@ use Symfony\Component\DomCrawler\Crawler;
 use Carbon\Carbon;
 use Facades\App\Models\Event;
 use Illuminate\Support\Collection;
-use App\Services\Roster\RosterParserServiceInterface;
+use App\Services\Roster\Interfaces\RosterParserServiceInterface;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class HtmlRosterParserService implements RosterParserServiceInterface
 {
     public function parse(string $filePath): void
     {
-        $htmlContent = file_get_contents(storage_path('app/'.$filePath));
-        if($htmlContent)
+        
+        if(Storage::disk('local')->exists($filePath))
         {
+            $htmlContent = Storage::disk('local')->get($filePath);
             $clawler = new Crawler($htmlContent);
             $lastDate = '';
             $periodText = $clawler->filter('div.row:nth-child(12) > b:nth-child(1)')->text();

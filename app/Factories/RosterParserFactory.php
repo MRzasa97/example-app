@@ -2,7 +2,7 @@
 
 namespace App\Factories;
 
-use App\Services\Roster\RosterParserServiceInterface;
+use App\Services\Roster\Interfaces\RosterParserServiceInterface;
 use App\Services\Roster\HtmlRosterParserService;
 
 class RosterParserFactory {

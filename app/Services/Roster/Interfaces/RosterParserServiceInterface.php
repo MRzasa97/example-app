@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Roster;
+namespace App\Services\Roster\Interfaces;
 
 interface RosterParserServiceInterface
 {

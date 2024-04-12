@@ -10,20 +10,22 @@ Route::get('/token', function () {
     return csrf_token(); 
 });
 
-Route::post('/upload', [EventController::class, 'uploadRoster']);
+// Grouping event-related routes under a common prefix and middleware if necessary
+Route::prefix('events')->group(function () {
+    Route::get('/', [EventController::class, 'index'])->name('events.index');
 
-Route::get('/events', [EventController::class, 'index']);
+    // Upload route
+    Route::post('/upload', [EventController::class, 'uploadRoster'])->name('events.upload');
 
-Route::get('/events/flights/stand-by/next-week', [EventController::class, 'getSBYEventsForNextWeek']);
+    // Specific routes for stand-by and next week using clearer paths
+    Route::get('/flights/stand-by/next-week', [EventController::class, 'getSBYEventsForNextWeek'])->name('events.standby.nextweek');
+    Route::get('/flights/next-week', [EventController::class, 'getEventsForNextWeek'])->name('events.nextweek');
 
-Route::get('/events/flights/next-week', [EventController::class, 'getEventsForNextWeek']);
+    // Using a more specific route for locations to avoid overlap
+    Route::get('/flights/location/{location}', [EventController::class, 'getEventsForGivenLocation'])->name('events.location');
 
-Route::get('/events/flights/{start_date}/{end_date}', [EventController::class, 'getEventsBetweenDates']);
-
-Route::get('/events/flights/{location}', [EventController::class, 'getEventsForGivenLocation']);
-
-
-
-
+    // Ensure this route does not overlap with the location route by making clear distinctions in the path
+    Route::get('/flights/{start_date}/{end_date}', [EventController::class, 'getEventsBetweenDates'])->name('events.dates');
+});
 
 

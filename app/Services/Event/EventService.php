@@ -3,7 +3,7 @@
 namespace App\Services\Event;
 
 use App\Services\Event\Interfaces\EventServiceInterface;
-use App\Models\Event;
+use Facades\App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 

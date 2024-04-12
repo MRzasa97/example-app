@@ -4,6 +4,15 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <report>
+            <text outputFile="coverage/coverage.txt" showUncoveredFiles="true"/>
+        </report>
+    </coverage>
+
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
@@ -22,11 +31,14 @@
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_DATABASE" value="testing"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+    <!-- other environment variables -->
+
     </php>
 </phpunit>

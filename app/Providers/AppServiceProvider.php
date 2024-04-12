@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\Roster\RosterParserServiceInterface;
+use App\Services\Roster\Interfaces\RosterParserServiceInterface;
 use App\Services\Roster\HtmlRosterParserService;
 use App\Services\Event\Interfaces\EventServiceInterface;
 use App\Services\Event\EventService;

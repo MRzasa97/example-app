@@ -1,0 +1,53 @@
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306:3306
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup PHP, Composer, and Xdebug
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+        extensions: mbstring, xml, ctype, iconv, pdo_mysql, xdebug
+        coverage: xdebug
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Setup environment
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    - name: Run Laravel Sail setup script
+      run: |
+        docker run --rm \
+          -v $(pwd):/opt \
+          -w /opt \
+          laravelsail/php80-composer:latest \
+          bash -c "composer install --ignore-platform-reqs && php artisan sail:install --with=mysql"
+
+    - name: Start Laravel Sail
+      run: ./vendor/bin/sail up -d
+
+    - name: Run migrations
+      run: ./vendor/bin/sail artisan migrate
+
+    - name: Execute tests with coverage
+      run: ./vendor/bin/sail artisan test --coverage-clover build/logs/clover.xml --coverage-text
+
+    - name: Display coverage text report
+      run: cat build/coverage.txt
+
+    - name: Tear down Laravel Sail
+      run: ./vendor/bin/sail down
