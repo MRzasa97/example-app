@@ -42,11 +42,14 @@ jobs:
       run: |
         ./vendor/bin/sail up -d
 
+    - name: Run migrations
+      run: ./vendor/bin/sail artisan migrate
+
     - name: Execute tests with coverage
-      run: ./vendor/bin/sail artisan test --coverage-clover build/logs/clover.xml --coverage-text
+      run: ./vendor/bin/sail artisan test --coverage
 
     - name: Display coverage text report
-      run: cat build/coverage.txt
+      run: cat coverage/coverage.txt
 
     - name: Tear down Laravel Sail
       run: ./vendor/bin/sail down
