@@ -42,10 +42,7 @@ jobs:
       run: |
         ./vendor/bin/sail up -d
         cat .env
-
-    - name: Run migrations
-      run: ./vendor/bin/sail artisan migrate
-
+        
     - name: Execute tests with coverage
       run: ./vendor/bin/sail artisan test --coverage-clover build/logs/clover.xml --coverage-text
 
