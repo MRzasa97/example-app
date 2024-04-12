@@ -41,12 +41,12 @@ jobs:
     - name: Start Laravel Sail
       run: |
         ./vendor/bin/sail up -d
-        
+
     - name: Create Coverage Directory
       run: mkdir -p coverage
 
     - name: Execute tests with coverage
-      run: ./vendor/bin/sail artisan test --coverage
+      run: ./vendor/bin/sail test --coverage
 
     - name: Display coverage text report
       run: cat coverage/coverage.txt
