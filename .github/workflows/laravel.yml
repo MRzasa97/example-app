@@ -18,7 +18,7 @@ jobs:
     - name: Setup PHP, Composer, and Xdebug
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.3'
         extensions: mbstring, xml, ctype, iconv, pdo_mysql, xdebug
         coverage: xdebug
 
@@ -35,14 +35,13 @@ jobs:
         docker run --rm \
           -v $(pwd):/opt \
           -w /opt \
-          laravelsail/php82-composer:latest \
-          bash -c "composer install --ignore-platform-reqs && php artisan sail:install --with=mysql"
+          laravelsail/php83-composer:latest \
+          bash -c "composer install --ignore-platform-reqs"
 
     - name: Start Laravel Sail
       run: |
         ./vendor/bin/sail up -d
-        cat .env
-        
+
     - name: Execute tests with coverage
       run: ./vendor/bin/sail artisan test --coverage-clover build/logs/clover.xml --coverage-text
 
