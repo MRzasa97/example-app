@@ -41,6 +41,9 @@ jobs:
     - name: Start Laravel Sail
       run: |
         ./vendor/bin/sail up -d
+        
+    - name: Create Coverage Directory
+      run: mkdir -p coverage
 
     - name: Execute tests with coverage
       run: ./vendor/bin/sail artisan test --coverage
