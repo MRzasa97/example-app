@@ -4,10 +4,7 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
+    <coverage includeUncoveredFiles="true">
         <report>
             <text outputFile="coverage/coverage.txt" showUncoveredFiles="true"/>
         </report>
