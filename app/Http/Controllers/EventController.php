@@ -9,10 +9,13 @@ use Carbon\Carbon;
 use App\Services\Roster\RosterParserServiceInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Factories\RosterParserFactory;
+use App\Http\Requests\EventRequest;
+use App\Http\Resources\EventResource;
 use App\Services\Event\Interfaces\EventServiceInterface;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class EventController extends Controller
 {
@@ -28,81 +31,39 @@ class EventController extends Controller
         return response()->json('test');
     }
 
-    public function getEventsBetweenDates(Request $request): JsonResponse
+    public function getEventsBetweenDates(EventRequest $request): AnonymousResourceCollection
     {
-        $validator = Validator::make([
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date
-        ], [
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation errors',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
         $events = $this->eventServiceInterface->getEventsBetweenDates($startDate, $endDate);
 
-        return response()->json($events);
+        return EventResource::collection($events);
     }
 
-    public function getEventsForGivenLocation(Request $request): JsonResponse
+    public function getEventsForGivenLocation(EventRequest $request): AnonymousResourceCollection
     {
-        $validator = Validator::make([
-            'location' => $request->location,
-        ], [
-            'location' => 'required|string|regex:/[a-zA-Z].*[a-zA-Z].*[a-zA-Z]/',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation errors',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-
-        $location = $request->location;
+        $location = $request->input('location');
         $events = $this->eventServiceInterface->getEventsForGivenLocation($location);
 
-        return response()->json($events);
+        return EventResource::collection($events);
     }
 
-    public function getEventsForNextWeek(Request $request): JsonResponse
+    public function getEventsForNextWeek(Request $request): AnonymousResourceCollection
     {
         $events = $this->eventServiceInterface->getEventsForNextWeek('2022-01-14');
 
-        return response()->json($events);
+        return EventResource::collection($events);
     }
 
-    public function getSBYEventsForNextWeek(Request $request): JsonResponse
+    public function getSBYEventsForNextWeek(Request $request): AnonymousResourceCollection
     {
         $events = $this->eventServiceInterface->getSBYEventsForNextWeek('2022-01-14');
-        return response()->json($events);
+        return EventResource::collection($events);
     }
 
-    public function uploadRoster(Request $request): JsonResponse
+    public function uploadRoster(EventRequest $request): JsonResponse
     {
-        $validator = Validator::make([
-            'file' => $request->file('roster_file'),
-        ], [
-            'file' => 'required|file|mimes:html,txt,pdf',
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation errors',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         $file = $request->file('roster_file');
 
         $filename = time() . '-' . $file->getClientOriginalName();

@@ -85,6 +85,7 @@ class HtmlRosterParserService implements RosterParserServiceInterface
             }
             $periodDate->addDay();
         }
+
         return $date;
     }
 
@@ -128,6 +129,7 @@ class HtmlRosterParserService implements RosterParserServiceInterface
         {
             throw new Exception("Date format not recognized.");
         }
+        
         return [
             'start_period' => Carbon::createFromFormat('dMy', $matches[1]),
             'end_period' => Carbon::createFromFormat('dMy', $matches[2])

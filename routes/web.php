@@ -22,10 +22,10 @@ Route::prefix('events')->group(function () {
     Route::get('/flights/next-week', [EventController::class, 'getEventsForNextWeek'])->name('events.nextweek');
 
     // Using a more specific route for locations to avoid overlap
-    Route::get('/flights/location/{location}', [EventController::class, 'getEventsForGivenLocation'])->name('events.location');
+    Route::get('/flights/location', [EventController::class, 'getEventsForGivenLocation'])->name('events.location');
 
     // Ensure this route does not overlap with the location route by making clear distinctions in the path
-    Route::get('/flights/{start_date}/{end_date}', [EventController::class, 'getEventsBetweenDates'])->name('events.dates');
+    Route::get('/flights', [EventController::class, 'getEventsBetweenDates'])->name('events.dates');
 });
 
 
