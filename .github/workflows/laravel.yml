@@ -46,7 +46,7 @@ jobs:
       run: mkdir -p coverage
 
     - name: Execute tests with coverage
-      run: ./vendor/bin/sail test
+      run: ./vendor/bin/sail test --coverage
 
     - name: Tear down Laravel Sail
       run: ./vendor/bin/sail down
