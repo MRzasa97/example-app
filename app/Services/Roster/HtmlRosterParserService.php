@@ -106,7 +106,9 @@ class HtmlRosterParserService implements RosterParserServiceInterface
             'sta_timestamp' => $staTimestamp
         ];
     }
-
+    /** to do:
+     * stop using references in this function
+     */
     private function parseAndValidateDate(string &$dateText, string &$lastDate, ?Carbon &$date): void
     {
         if($dateText != $lastDate && $dateText != '' && $lastDate != '')

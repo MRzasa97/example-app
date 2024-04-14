@@ -11,4 +11,7 @@ down:
 	./vendor/bin/sail down
 
 test:
-	./vendor/bin/sail tests --coverage
+	./vendor/bin/sail test --coverage
+
+migrate:
+	./vendor/bin/sail artisan migrate
