@@ -20,9 +20,12 @@ class EventControllerTest extends TestCase
     use RefreshDatabase;
     public function test_index_returns_a_test_message()
     {
-        $response = $this->get('/events');
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->get('/events');
+
         $response->assertStatus(200);
-        $response->assertExactJson(['test']);
+        $response->assertExactJson(['OK']);
     }
 
     public function test_get_events_between_dates_fails_if_dates_missing()

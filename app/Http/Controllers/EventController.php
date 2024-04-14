@@ -28,7 +28,7 @@ class EventController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        return response()->json('test');
+        return response()->json('OK');
     }
 
     public function getEventsBetweenDates(EventRequest $request): AnonymousResourceCollection

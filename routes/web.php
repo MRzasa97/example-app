@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Middleware\OnlyAcceptJsonMiddleware;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,7 +12,9 @@ Route::get('/token', function () {
 });
 
 // Grouping event-related routes under a common prefix and middleware if necessary
-Route::prefix('events')->group(function () {
+Route::prefix('events')
+->middleware([OnlyAcceptJsonMiddleware::class])
+->group(function () {
     Route::get('/', [EventController::class, 'index'])->name('events.index');
 
     // Upload route
