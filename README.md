@@ -44,3 +44,8 @@ migrate: <br />
 
 If you want to upload file, firstly you have to get token from `/token/` endpoint.
 This endpoint should be secured, but I wanted to focus on core logic and send project in time.
+
+To do:
+Separate WorkTime Service responsibility<br />
+Change custom request IsJsonRequest name to ExpectJsonRequest</br />
+Keep money amount as lowest possible currency
